@@ -91,8 +91,8 @@ class Example(QWidget):
             self.table.setItem(index, 0, QTableWidgetItem(str(ids)))
             self.table.setItem(index, 1, QTableWidgetItem(Word))
             self.table.setItem(index, 2, QTableWidgetItem(Key))
-            self.table.setItem(index, 0, QTableWidgetItem(TrasFrench))
-            self.table.setItem(index, 1, QTableWidgetItem(TrasSpanish))
+            self.table.setItem(index, 3, QTableWidgetItem(TrasFrench))
+            self.table.setItem(index, 4, QTableWidgetItem(TrasSpanish))
 
             index += 1
 
@@ -105,7 +105,7 @@ class Example(QWidget):
 
 
         query = QSqlQuery()
-        query.exec_("insert into person values({0}, '{1}', '{2}','{3}','{4}'')".format(ids, Word, Key,TrasFrench,TrasSpanish))
+        query.exec_("insert into person values({0}, '{1}', '{2}','{3}','{4}')".format(ids, Word, Key,TrasFrench,TrasSpanish))
 
     def eliminarDatos(self, event):
         selected = self.table.currentIndex()
@@ -135,7 +135,7 @@ class Example(QWidget):
         query = QSqlQuery()
         query.exec_("create table person(id int primary key, "
                     "firstname varchar(20), lastname varchar(20))")
-        query.exec_("insert into person values(101, 'Walk', 'to ','Young','Marche')")
+        query.exec_("insert into person values(1, 'Walk', 'to ','Young','Marche')")
       
     def init(self, filename, server):
         import os

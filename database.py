@@ -10,32 +10,49 @@ class Example(QWidget):
     def __init__(self, parent=None):
         super(Example, self).__init__(parent)
 
-        self.table = QTableWidget(0, 3)
-        self.table.setHorizontalHeaderLabels(['ID', 'NOMBRE', 'APELLIDO'])
+        self.table = QTableWidget(0, 5)
+        self.table.setHorizontalHeaderLabels(['ID', 'Word', 'Key','TrasFrench','TrasSpanish'])
         self.table.setAlternatingRowColors(True)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setSelectionMode(QTableWidget.SingleSelection)
 
-        self.lblID = QLabel("ID:")
+        self.lblID = QLabel("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
         self.txtID = QLineEdit()
         self.txtID.setPlaceholderText("Numero identificador unico")
 
-        self.lblName = QLabel("Nombre:")
-        self.txtName = QLineEdit()
-        self.txtName.setPlaceholderText("Nombre de la persona")
+        self.lblWord = QLabel("Word:")
+        self.txtWord = QLineEdit()
+        self.txtWord.setPlaceholderText("Word")
 
-        self.lblApellido = QLabel("Apellido:")
-        self.txtApellido = QLineEdit()
-        self.txtApellido.setPlaceholderText("Apellido de la persona")
+        self.lblKey = QLabel("Key:")
+        self.txtKey = QLineEdit()
+        self.txtKey.setPlaceholderText("Meaning")
+
+        self.lblKey = QLabel("TrasFrench:")
+        self.txtKey = QLineEdit()
+        self.txtKey.setPlaceholderText("Traduction in French")
+
+        self.lblKey = QLabel("TrasSpanish:")
+        self.txtKey = QLineEdit()
+        self.txtKey.setPlaceholderText("Traduction in Spanish")
+
 
         grid = QGridLayout()
         grid.addWidget(self.lblID, 0, 0)
         grid.addWidget(self.txtID, 0, 1)
-        grid.addWidget(self.lblName, 1, 0)
-        grid.addWidget(self.txtName, 1, 1)
-        grid.addWidget(self.lblApellido, 2, 0)
-        grid.addWidget(self.txtApellido, 2, 1)
+        grid.addWidget(self.lblWord, 1, 0)
+        grid.addWidget(self.txtWord, 1, 1)
+        grid.addWidget(self.lblKey, 2, 0)
+        grid.addWidget(self.txtKey, 2, 1)
+        grid.addWidget(self.lblTrasFrench, 3, 0)
+        grid.addWidget(self.txtTrasFrench, 3, 1)
+        grid.addWidget(self.lblTrasSpanish, 4, 0)
+        grid.addWidget(self.txtTrasSpanish, 4, 1)
+
+
+
+
 
         btnCargar = QPushButton('Cargar Datos')
         btnCargar.clicked.connect(self.cargarDatos)

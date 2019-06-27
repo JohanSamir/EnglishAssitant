@@ -19,7 +19,7 @@ class Example(QWidget):
 
         self.lblID = QLabel("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
         self.txtID = QLineEdit()
-        self.txtID.setPlaceholderText("Numero identificador unico")
+        self.txtID.setPlaceholderText("Unique Number")
 
         self.lblWord = QLabel("Word:")
         self.txtWord = QLineEdit()
@@ -29,13 +29,13 @@ class Example(QWidget):
         self.txtKey = QLineEdit()
         self.txtKey.setPlaceholderText("Meaning")
 
-        self.lblKey = QLabel("TrasFrench:")
-        self.txtKey = QLineEdit()
-        self.txtKey.setPlaceholderText("Traduction in French")
+        self.lblTrasFrench = QLabel("TrasFrench:")
+        self.txtTrasFrench = QLineEdit()
+        self.txtTrasFrench.setPlaceholderText("Traduction in French")
 
-        self.lblKey = QLabel("TrasSpanish:")
-        self.txtKey = QLineEdit()
-        self.txtKey.setPlaceholderText("Traduction in Spanish")
+        self.lblTrasSpanish = QLabel("TrasSpanish:")
+        self.txtTrasSpanish = QLineEdit()
+        self.txtTrasSpanish.setPlaceholderText("Traduction in Spanish")
 
 
         grid = QGridLayout()
@@ -49,9 +49,6 @@ class Example(QWidget):
         grid.addWidget(self.txtTrasFrench, 3, 1)
         grid.addWidget(self.lblTrasSpanish, 4, 0)
         grid.addWidget(self.txtTrasSpanish, 4, 1)
-
-
-
 
 
         btnCargar = QPushButton('Cargar Datos')
@@ -75,7 +72,7 @@ class Example(QWidget):
         vbx.addWidget(self.table)
 
         self.setWindowTitle("PyQT :: SQLite Data Access")
-        self.resize(362, 320)
+        self.resize(562, 520)
         self.setLayout(vbx)
 
     def cargarDatos(self, event):
@@ -85,23 +82,30 @@ class Example(QWidget):
 
         while query.next():
             ids = query.value(0)
-            nombre = query.value(1)
-            apellido = query.value(2)
+            Word = query.value(1)
+            Key = query.value(2)
+            TrasFrench = query.value(3)
+            TrasSpanish = query.value(4)
 
             self.table.setRowCount(index + 1)
             self.table.setItem(index, 0, QTableWidgetItem(str(ids)))
-            self.table.setItem(index, 1, QTableWidgetItem(nombre))
-            self.table.setItem(index, 2, QTableWidgetItem(apellido))
+            self.table.setItem(index, 1, QTableWidgetItem(Word))
+            self.table.setItem(index, 2, QTableWidgetItem(Key))
+            self.table.setItem(index, 0, QTableWidgetItem(TrasFrench))
+            self.table.setItem(index, 1, QTableWidgetItem(TrasSpanish))
 
             index += 1
 
     def insertarDatos(self, event):
         ids = int(self.txtID.text())
-        nombre = self.txtName.text()
-        apellido = self.txtApellido.text()
+        Word = self.txtWord.text()
+        Key = self.txtKey.text()
+        TrasFrench = self.txtTrasFrench.text()
+        TrasSpanish = self.txtTrasSpanish.text()
+
 
         query = QSqlQuery()
-        query.exec_("insert into person values({0}, '{1}', '{2}')".format(ids, nombre, apellido))
+        query.exec_("insert into person values({0}, '{1}', '{2}','{3}','{4}'')".format(ids, Word, Key,TrasFrench,TrasSpanish))
 
     def eliminarDatos(self, event):
         selected = self.table.currentIndex()
@@ -131,12 +135,8 @@ class Example(QWidget):
         query = QSqlQuery()
         query.exec_("create table person(id int primary key, "
                     "firstname varchar(20), lastname varchar(20))")
-        query.exec_("insert into person values(101, 'Danny', 'Young')")
-        query.exec_("insert into person values(102, 'Christine', 'Holand')")
-        query.exec_("insert into person values(103, 'Lars', 'Gordon')")
-        query.exec_("insert into person values(104, 'Roberto', 'Robitaille')")
-        query.exec_("insert into person values(105, 'Maria', 'Papadopoulos')")
-
+        query.exec_("insert into person values(101, 'Walk', 'to ','Young','Marche')")
+      
     def init(self, filename, server):
         import os
         if not os.path.exists(filename):

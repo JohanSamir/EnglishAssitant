@@ -10,8 +10,8 @@ class Example(QWidget):
     def __init__(self, parent=None):
         super(Example, self).__init__(parent)
 
-        self.table = QTableWidget(0, 4)
-        self.table.setHorizontalHeaderLabels(['ID', 'NOMBRE', 'APELLIDO', 'APELLIDO2'])
+        self.table = QTableWidget(0, 5)
+        self.table.setHorizontalHeaderLabels(['ID', 'Word', 'Key','TrasFrench','TrasSpanish'])
         self.table.setAlternatingRowColors(True)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
@@ -19,19 +19,23 @@ class Example(QWidget):
 
         self.lblID = QLabel("ID:")
         self.txtID = QLineEdit()
-        self.txtID.setPlaceholderText("Numero identificador unico")
+        self.txtID.setPlaceholderText("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
 
-        self.lblName = QLabel("Nombre:")
+        self.lblName = QLabel("Word:")
         self.txtName = QLineEdit()
-        self.txtName.setPlaceholderText("Nombre de la persona")
+        self.txtName.setPlaceholderText("Word")
 
-        self.lblApellido = QLabel("Apellido:")
+        self.lblApellido = QLabel("Key")
         self.txtApellido = QLineEdit()
-        self.txtApellido.setPlaceholderText("Apellido de la persona")
+        self.txtApellido.setPlaceholderText("Meaning")
 
-        self.lblApellido2 = QLabel("Apellido:")
+        self.lblApellido2 = QLabel("TrasFrench:")
         self.txtApellido2 = QLineEdit()
-        self.txtApellido2.setPlaceholderText("Apellido de la persona")
+        self.txtApellido2.setPlaceholderText("Traduction in French")
+
+        self.lblApellido3 = QLabel("TrasSpanish:")
+        self.txtApellido3 = QLineEdit()
+        self.txtApellido3.setPlaceholderText("Traduction in Spanish")
 
         grid = QGridLayout()
         grid.addWidget(self.lblID, 0, 0)
@@ -42,6 +46,8 @@ class Example(QWidget):
         grid.addWidget(self.txtApellido, 2, 1)
         grid.addWidget(self.lblApellido2, 3, 0)
         grid.addWidget(self.txtApellido2, 3, 1)
+        grid.addWidget(self.lblApellido3, 4, 0)
+        grid.addWidget(self.txtApellido3, 4, 1)
 
         btnCargar = QPushButton('Cargar Datos')
         btnCargar.clicked.connect(self.cargarDatos)
@@ -77,12 +83,14 @@ class Example(QWidget):
             nombre = query.value(1)
             apellido = query.value(2)
             apellido2 = query.value(3)
+            apellido3 = query.value(4)
 
             self.table.setRowCount(index + 1)
             self.table.setItem(index, 0, QTableWidgetItem(str(ids)))
             self.table.setItem(index, 1, QTableWidgetItem(nombre))
             self.table.setItem(index, 2, QTableWidgetItem(apellido))
             self.table.setItem(index, 3, QTableWidgetItem(apellido2))
+            self.table.setItem(index, 4, QTableWidgetItem(apellido3))
 
 
             index += 1
@@ -92,9 +100,10 @@ class Example(QWidget):
         nombre = self.txtName.text()
         apellido = self.txtApellido.text()
         apellido2 = self.txtApellido2.text()
+        apellido3 = self.txtApellido3.text()
 
         query = QSqlQuery()
-        query.exec_("insert into person values({0}, '{1}', '{2}','{3}')".format(ids, nombre, apellido,apellido2))
+        query.exec_("insert into person values({0},'{1}', '{2}','{3}','{4}')".format(ids, nombre, apellido,apellido2,apellido3))
 
     def eliminarDatos(self, event):
         selected = self.table.currentIndex()
@@ -123,9 +132,9 @@ class Example(QWidget):
     def db_create(self):
         query = QSqlQuery()
         query.exec_("create table person(id int primary key, "
-                    "firstname varchar(20), lastname varchar(20), stname varchar(20))")        
+                    "firstname varchar(20), lastname varchar(20), stname varchar(20),sstname varchar(20))")        
         query.exec_("insert into person values(101, 'Danny', 'Young')")
-        query.exec_("insert into person values(102, 'Christine', 'Holand','jaja')")
+        query.exec_("insert into person values(1, 'Walk', 'f','Marche','Caminar')")
         
 
     def init(self, filename, server):

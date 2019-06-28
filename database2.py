@@ -10,16 +10,21 @@ class Example(QWidget):
     def __init__(self, parent=None):
         super(Example, self).__init__(parent)
 
-        self.table = QTableWidget(0, 5)
-        self.table.setHorizontalHeaderLabels(['ID', 'Word', 'Key','TrasFrench','TrasSpanish'])
+        self.table = QTableWidget(0, 6)
+        self.table.setHorizontalHeaderLabels(['ID', 'Type', 'Word', 'Key','TrasFrench','TrasSpanish'])
         self.table.setAlternatingRowColors(True)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         self.table.setSelectionMode(QTableWidget.SingleSelection)
+        self.table.setColumnWidth(3,550)
 
         self.lblID = QLabel("ID:")
         self.txtID = QLineEdit()
-        self.txtID.setPlaceholderText("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
+        self.txtID.setPlaceholderText("Number:")
+
+        self.lblIDType = QLabel("Type:")
+        self.txtIDType = QLineEdit()
+        self.txtIDType.setPlaceholderText("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
 
         self.lblName = QLabel("Word:")
         self.txtName = QLineEdit()
@@ -40,14 +45,17 @@ class Example(QWidget):
         grid = QGridLayout()
         grid.addWidget(self.lblID, 0, 0)
         grid.addWidget(self.txtID, 0, 1)
-        grid.addWidget(self.lblName, 1, 0)
-        grid.addWidget(self.txtName, 1, 1)
-        grid.addWidget(self.lblApellido, 2, 0)
-        grid.addWidget(self.txtApellido, 2, 1)
-        grid.addWidget(self.lblApellido2, 3, 0)
-        grid.addWidget(self.txtApellido2, 3, 1)
-        grid.addWidget(self.lblApellido3, 4, 0)
-        grid.addWidget(self.txtApellido3, 4, 1)
+        grid.addWidget(self.lblIDType, 1, 0)
+        grid.addWidget(self.txtIDType, 1, 1)
+        grid.addWidget(self.lblName, 2, 0)
+        grid.addWidget(self.txtName, 2, 1)
+        grid.addWidget(self.lblApellido, 3, 0)
+        grid.addWidget(self.txtApellido, 3, 1)
+        grid.addWidget(self.lblApellido2, 4, 0)
+        grid.addWidget(self.txtApellido2, 4, 1)
+        grid.addWidget(self.lblApellido3, 5, 0)
+        grid.addWidget(self.txtApellido3, 5, 1)
+
 
         btnCargar = QPushButton('Cargar Datos')
         btnCargar.clicked.connect(self.cargarDatos)
@@ -69,8 +77,8 @@ class Example(QWidget):
         vbx.setAlignment(Qt.AlignTop)
         vbx.addWidget(self.table)
 
-        self.setWindowTitle("PyQT :: SQLite Data Access")
-        self.resize(562, 520)
+        self.setWindowTitle("JSOC: Dictionary")
+        self.resize(1100, 520)
         self.setLayout(vbx)
 
     def cargarDatos(self, event):
@@ -80,30 +88,33 @@ class Example(QWidget):
 
         while query.next():
             ids = query.value(0)
-            nombre = query.value(1)
-            apellido = query.value(2)
-            apellido2 = query.value(3)
-            apellido3 = query.value(4)
+            typewo = query.value(1)
+            nombre = query.value(2)
+            apellido = query.value(3)
+            apellido2 = query.value(4)
+            apellido3 = query.value(5)
 
             self.table.setRowCount(index + 1)
             self.table.setItem(index, 0, QTableWidgetItem(str(ids)))
-            self.table.setItem(index, 1, QTableWidgetItem(nombre))
-            self.table.setItem(index, 2, QTableWidgetItem(apellido))
-            self.table.setItem(index, 3, QTableWidgetItem(apellido2))
-            self.table.setItem(index, 4, QTableWidgetItem(apellido3))
+            self.table.setItem(index, 1, QTableWidgetItem(typewo))
+            self.table.setItem(index, 2, QTableWidgetItem(nombre))
+            self.table.setItem(index, 3, QTableWidgetItem(apellido))
+            self.table.setItem(index, 4, QTableWidgetItem(apellido2))
+            self.table.setItem(index, 5, QTableWidgetItem(apellido3))
 
 
             index += 1
 
     def insertarDatos(self, event):
         ids = int(self.txtID.text())
+        typewo = self.txtIDType.text()
         nombre = self.txtName.text()
         apellido = self.txtApellido.text()
         apellido2 = self.txtApellido2.text()
         apellido3 = self.txtApellido3.text()
 
         query = QSqlQuery()
-        query.exec_("insert into person values({0},'{1}', '{2}','{3}','{4}')".format(ids, nombre, apellido,apellido2,apellido3))
+        query.exec_("insert into person values({0},'{1}','{2}','{3}','{4}','{5}')".format(ids,typewo,nombre, apellido,apellido2,apellido3))
 
     def eliminarDatos(self, event):
         selected = self.table.currentIndex()
@@ -132,9 +143,9 @@ class Example(QWidget):
     def db_create(self):
         query = QSqlQuery()
         query.exec_("create table person(id int primary key, "
-                    "firstname varchar(20), lastname varchar(20), stname varchar(20),sstname varchar(20))")        
-        query.exec_("insert into person values(101, 'Danny', 'Young')")
-        query.exec_("insert into person values(1, 'Walk', 'f','Marche','Caminar')")
+                    "firstname varchar(20), lastname varchar(20), stname varchar(20),sstname varchar(20),ssstname varchar(20))")        
+        #query.exec_("insert into person values(102, 'Danny', 'Young')")
+        query.exec_("insert into person values(1,'V','Walk','to move along by putting one foot in front of the other','Marche','Caminar')")
         
 
     def init(self, filename, server):

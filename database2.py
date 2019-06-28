@@ -10,8 +10,8 @@ class Example(QWidget):
     def __init__(self, parent=None):
         super(Example, self).__init__(parent)
 
-        self.table = QTableWidget(0, 5)
-        self.table.setHorizontalHeaderLabels(['ID', 'Word', 'Key','TrasFrench','TrasSpanish'])
+        self.table = QTableWidget(0, 4)
+        self.table.setHorizontalHeaderLabels(['ID', 'NOMBRE', 'APELLIDO', 'APELLIDO2'])
         self.table.setAlternatingRowColors(True)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
@@ -19,37 +19,29 @@ class Example(QWidget):
 
         self.lblID = QLabel("ID:")
         self.txtID = QLineEdit()
-        self.txtID.setPlaceholderText("Verbs(1) Nouns(2) Adjectives(3) Adverbs(4):")
+        self.txtID.setPlaceholderText("Numero identificador unico")
 
-        self.lblWord = QLabel("Word:")
-        self.txtWord = QLineEdit()
-        self.txtWord.setPlaceholderText("Word ..")
+        self.lblName = QLabel("Nombre:")
+        self.txtName = QLineEdit()
+        self.txtName.setPlaceholderText("Nombre de la persona")
 
-        self.lblKey = QLabel("Key:")
-        self.txtKey = QLineEdit()
-        self.txtKey.setPlaceholderText("Meaning")
+        self.lblApellido = QLabel("Apellido:")
+        self.txtApellido = QLineEdit()
+        self.txtApellido.setPlaceholderText("Apellido de la persona")
 
-        self.lblTrasFrench = QLabel("TrasFrench:")
-        self.txtTrasFrench = QLineEdit()
-        self.txtTrasFrench.setPlaceholderText("Traduction in French")
-
-        self.lblTrasSpanish = QLabel("TrasSpanish:")
-        self.txtTrasSpanish = QLineEdit()
-        self.txtTrasSpanish.setPlaceholderText("Traduction in Spanish")
-
+        self.lblApellido2 = QLabel("Apellido:")
+        self.txtApellido2 = QLineEdit()
+        self.txtApellido2.setPlaceholderText("Apellido de la persona")
 
         grid = QGridLayout()
         grid.addWidget(self.lblID, 0, 0)
         grid.addWidget(self.txtID, 0, 1)
-        grid.addWidget(self.lblWord, 1, 0)
-        grid.addWidget(self.txtWord, 1, 1)
-        grid.addWidget(self.lblKey, 2, 0)
-        grid.addWidget(self.txtKey, 2, 1)
-        grid.addWidget(self.lblTrasFrench, 3, 0)
-        grid.addWidget(self.txtTrasFrench, 3, 1)
-        grid.addWidget(self.lblTrasSpanish, 4, 0)
-        grid.addWidget(self.txtTrasSpanish, 4, 1)
-
+        grid.addWidget(self.lblName, 1, 0)
+        grid.addWidget(self.txtName, 1, 1)
+        grid.addWidget(self.lblApellido, 2, 0)
+        grid.addWidget(self.txtApellido, 2, 1)
+        grid.addWidget(self.lblApellido2, 3, 0)
+        grid.addWidget(self.txtApellido2, 3, 1)
 
         btnCargar = QPushButton('Cargar Datos')
         btnCargar.clicked.connect(self.cargarDatos)
@@ -71,7 +63,7 @@ class Example(QWidget):
         vbx.setAlignment(Qt.AlignTop)
         vbx.addWidget(self.table)
 
-        self.setWindowTitle("JohanS :: English Training")
+        self.setWindowTitle("PyQT :: SQLite Data Access")
         self.resize(562, 520)
         self.setLayout(vbx)
 
@@ -82,30 +74,27 @@ class Example(QWidget):
 
         while query.next():
             ids = query.value(0)
-            Word = query.value(1)
-            Key = query.value(2)
-            TrasFrench = query.value(3)
-            TrasSpanish = query.value(4)
+            nombre = query.value(1)
+            apellido = query.value(2)
+            apellido2 = query.value(3)
 
             self.table.setRowCount(index + 1)
             self.table.setItem(index, 0, QTableWidgetItem(str(ids)))
-            self.table.setItem(index, 1, QTableWidgetItem(Word))
-            self.table.setItem(index, 2, QTableWidgetItem(Key))
-            self.table.setItem(index, 3, QTableWidgetItem(TrasFrench))
-            self.table.setItem(index, 4, QTableWidgetItem(TrasSpanish))
+            self.table.setItem(index, 1, QTableWidgetItem(nombre))
+            self.table.setItem(index, 2, QTableWidgetItem(apellido))
+            self.table.setItem(index, 3, QTableWidgetItem(apellido2))
+
 
             index += 1
 
     def insertarDatos(self, event):
         ids = int(self.txtID.text())
-        Word = self.txtWord.text()
-        Key = self.txtKey.text()
-        TrasFrench = self.txtTrasFrench.text()
-        TrasSpanish = self.txtTrasSpanish.text()
-
+        nombre = self.txtName.text()
+        apellido = self.txtApellido.text()
+        apellido2 = self.txtApellido2.text()
 
         query = QSqlQuery()
-        query.exec_("insert into person values({0}, '{1}','{2}','{3}','{4}')".format(ids, Word, Key,TrasFrench,TrasSpanish))
+        query.exec_("insert into person values({0}, '{1}', '{2}','{3}')".format(ids, nombre, apellido,apellido2))
 
     def eliminarDatos(self, event):
         selected = self.table.currentIndex()
@@ -133,13 +122,12 @@ class Example(QWidget):
 
     def db_create(self):
         query = QSqlQuery()
-        query.exec_("create table person(id int primary key,"
-                    "firstname varchar(20), lastname varchar(20),firstname1 varchar(20),firstname1 varchar(20))")
-        query.exec_("insert into person values(106, 'Walk', 'to','Young','Marche')")
-        query.exec_("insert into person values(103, 'Lars', 'Gordon','la')")
-        query.exec_("insert into person values(104, 'Roberto', 'Robitaille')")
-        query.exec_("insert into person values(105, 'Maria', 'Papadopoulos')")
-      
+        query.exec_("create table person(id int primary key, "
+                    "firstname varchar(20), lastname varchar(20), stname varchar(20))")        
+        query.exec_("insert into person values(101, 'Danny', 'Young')")
+        query.exec_("insert into person values(102, 'Christine', 'Holand','jaja')")
+        
+
     def init(self, filename, server):
         import os
         if not os.path.exists(filename):

@@ -12,7 +12,6 @@ sqlite_file = '/home/johan/repos/GitHub/EnglishAssitant/datafile'    # name of t
 conn = sqlite3.connect(sqlite_file)
 c = conn.cursor()
 print("Opened database successfully")
-
 #------------------------------------------#
 for row in c.execute("SELECT name FROM sqlite_master WHERE type='table';"):
     print(row)
@@ -43,6 +42,7 @@ df = pd.DataFrame(person_table, columns=['id','firstname','lastname','stname','s
 idmax = df['id'].max()
 #print(idmax)    
 df.head()
+df.to_csv('/home/johan/Dropbox/Dataset_english.csv',sep=' ',index=True)
 
 #------------------------------------------#
 adjectives = np.array(df.loc[df['firstname'] == 'A'])
